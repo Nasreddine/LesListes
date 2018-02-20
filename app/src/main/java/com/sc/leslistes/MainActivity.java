@@ -19,6 +19,8 @@ import javax.xml.datatype.Duration;
 public class MainActivity extends Activity {
 
     ListView liste;
+    ArrayAdapter adapter ;
+    ArrayList<String> source_donnees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +29,14 @@ public class MainActivity extends Activity {
         // faire le lien entre notre objet à programmer et l'interface XML qui concerne la liste
         liste = (ListView) findViewById(R.id.liste);
         // créer la source de données pour la liste, donc notre cas simple il s'agit d'une liste de chaînes de caractères
-        ArrayList<String> source_donnees = new ArrayList<>();
+        source_donnees = new ArrayList<>();
         source_donnees.add("élément1");
         source_donnees.add("élément2");
 
         // créer un adaptateur qui joue le rôle d'un intermidiaire
         // entre le coomposant graphique (liste) et la source des donnée (source_donnees)
         // android.R.layout.simple_list_item_1 est une vue déjà définit par développeur Android
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),
+        adapter = new ArrayAdapter(getApplicationContext(),
                 android.R.layout.simple_list_item_1, source_donnees);
 
         // attacher l'adaptateur à notre liste
@@ -49,6 +51,10 @@ public class MainActivity extends Activity {
                 String contenu = liste.getItemAtPosition(position).toString();
                 Toast.makeText(getApplicationContext(), "l'élément " + position + " a été cliqué"
                                 + " sont contenu :" + contenu, Toast.LENGTH_LONG).show();
+                // Ajouter un nouvelle élément quand un élément existe est cliqué
+                source_donnees.add("élément" + String.valueOf(id));
+                adapter.notifyDataSetChanged();
+
             }
         });
 
